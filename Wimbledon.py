@@ -23,7 +23,7 @@ def main():
             InputBox = WimbledonInput("Andy Murray", "Rafael Nadal", 0.73, 0.68)    # some default values
             input_choice = InputBox.interact()  # get button click
             InputBox.close()
-            if input_choice == "Exit":
+            if input_choice == "Return":
                 pass
             else:
                 # initialize board for match
