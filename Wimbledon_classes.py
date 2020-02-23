@@ -369,8 +369,8 @@ class Board:
         self.SetsB.setText(setsB)
         self.GamesA.setText(gamesA)
         self.GamesB.setText(gamesB)
-        tennis_points = ["0", "15", "30", "40", "A"]
-        if (gamesA == 6 and gamesB == 6) or (gamesA == 6 and gamesB == 7) or (gamesA == 7 and gamesA == 6):
+        tennis_points = ["0", "15", "30", "40", "A"]            
+        if (gamesA == 6 and gamesB == 6) or (gamesA == 6 and gamesB == 7) or (gamesA == 7 and gamesA == 6) and (pointsA == "" and pointsB == ""):
             self.PointsA.setText(pointsA)
             self.PointsB.setText(pointsB)
         else:
