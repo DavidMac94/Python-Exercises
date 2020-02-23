@@ -84,15 +84,14 @@ def sim_one_point(main_board, probA, probB, setsA, setsB, gamesA, gamesB, points
                     gamesA, gamesB = 0, 0
                     main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
                 else:
-                    num_sets = setsA + setsB
-                    if num_sets == 5:       # leaves final set score in on scoreboard if match goes to 5 sets
+                    set_number = setsA + setsB
+                    if set_number == 5:       # leaves final set score in on scoreboard if match goes to 5 sets
                         pointsA, pointsB = "", ""
                         main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
                     else:
-                        set_number = setsA + setsB
                         main_board.previous_set("A" + str(set_number), gamesA)
                         main_board.previous_set("B" + str(set_number), gamesB)
-                        gamesA, gamesB, pointsA, pointsB = "", ""
+                        gamesA, gamesB, pointsA, pointsB = "", "", "", ""
                         main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
     else:
         pointsA, pointsB = update_tiebreak_score(pointsA, pointsB, point_winner)
@@ -114,11 +113,10 @@ def sim_one_point(main_board, probA, probB, setsA, setsB, gamesA, gamesB, points
                 pointsA, pointsB, gamesA, gamesB = 0, 0, 0, 0
                 main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
             else:
-                num_sets = setsA + setsB
-                if num_sets == 5:
+                set_number = setsA + setsB
+                if set_number == 5:
                     main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
                 else:
-                    set_number = setsA + setsB
                     main_board.previous_set("A" + str(set_number), gamesA)
                     main_board.previous_set("B" + str(set_number), gamesB)
                     main_board.previous_set_tiebreak("A" + str(set_number), pointsA)
