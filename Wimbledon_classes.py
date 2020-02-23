@@ -373,7 +373,7 @@ class Board:
         if gamesA == "" and gamesB == "":
             self.PointsA.setText(pointsA)
             self.PointsB.setText(pointsB)
-        elif (gamesA == 6 and gamesB == 6) or (gamesA == 6 and gamesB == 7) or (gamesA == 7 and gamesA == 6) and (pointsA == "" and pointsB == ""):
+        elif (gamesA == 6 and gamesB == 6) or (gamesA == 6 and gamesB == 7) or (gamesA == 7 and gamesA == 6) or (pointsA == "" and pointsB == ""):
             self.PointsA.setText(pointsA)
             self.PointsB.setText(pointsB)
         else:
