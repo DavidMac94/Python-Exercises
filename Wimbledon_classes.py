@@ -99,7 +99,6 @@ class WimbledonInput:
                 else:
                     self.warning1.setFill("red")
                     self.warning2.setFill("red")
-                return "Sim Match"
             if self.exit.clicked(pt):
                 return "Return"
 
