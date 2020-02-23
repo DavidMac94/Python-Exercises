@@ -87,6 +87,18 @@ class WimbledonInput:
         while True:
             pt = self.win.getMouse()
             if self.sim.clicked(pt):
+                try:
+                    a = float(self.probA.getText())
+                    b = float(self.probB.getText())
+                except:
+                    self.warning1.setFill("red")
+                    self.warning2.setFill("red")
+                    continue
+                if 0 < a < 1 and 0 < b < 1:
+                    return "Sim Match"
+                else:
+                    self.warning1.setFill("red")
+                    self.warning2.setFill("red")
                 return "Sim Match"
             if self.exit.clicked(pt):
                 return "Return"
