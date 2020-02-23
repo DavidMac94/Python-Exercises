@@ -74,8 +74,8 @@ class WimbledonInput:
         self.probB = Entry(Point(2.7,4), 5).draw(win)
         self.probB.setText(str(probB))
 
-        Text(Point(2, 8), "*Probability player wins point on serve.").draw(win)
-        Text(Point(2, 8.6), "Enter number in range (0, 1)").draw(win)
+        self.warning1 = Text(Point(2, 8), "*Probability player wins point on serve.").draw(win)
+        self.warning2 = Text(Point(2, 8.6), "Enter number in range (0, 1)").draw(win)
 
         self.sim = Button(win, Point(1, 6), 1.25, .5, "Sim")
         self.sim.activate()
