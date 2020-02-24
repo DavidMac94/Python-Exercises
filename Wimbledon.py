@@ -33,19 +33,45 @@ def main():
                 main_board.set_server(serving)
                 setsA, setsB, gamesA, gamesB, pointsA, pointsB = 0, 0, 0, 0, 0, 0
                 main_board.clear()
-                main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                main_board.update_score(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
                 
                 main_board.button_in_match()
                 while True:
                     button_choice = main_board.interact()
-                    if button_choice == "Play":
+                    # sims point/game/set or match depending on button clicked. Loops until user quits.
+                    if button_choice == "Point":
                         setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving = sim_one_point(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving)
+                        if not match_done(setsA, setsB):
+                            main_board.update_score(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        else:
+                            main_board.update_score_end(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        main_board.set_server(serving)
+                    elif button_choice == "Game":
+                        setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving = sim_one_game(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving)
+                        if not match_done(setsA, setsB):
+                            main_board.update_score(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        else:
+                            main_board.update_score_end(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        main_board.set_server(serving)
+                    elif button_choice == "Set":
+                        setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving = sim_one_set(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving)
+                        if not match_done(setsA, setsB):
+                            main_board.update_score(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        else:
+                            main_board.update_score_end(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        main_board.set_server(serving)
+                    elif button_choice == "Match":
+                        setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving = sim_one_match(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving)
+                        if not match_done(setsA, setsB):
+                            main_board.update_score(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        else:
+                            main_board.update_score_end(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
+                        main_board.set_server(serving)
                     elif button_choice == "Stop":
                         main_board.button_outside_match()
                         break
-                    else:
-                        button_choice = main_board.interact()
-                    if match_done(setsA, setsB):            # stops loop when match is done
+                    if match_done(setsA, setsB):
+                        # stops loop when match is done
                         main_board.button_outside_match()
                         break
 
@@ -56,24 +82,19 @@ def main():
 
 def sim_one_point(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving):
     """Accepts a board, and current score along with current server as parameters.
-    Returns score after point along with who is to serve next point. Also updates
-    board as necessary."""
+    Returns score after point along with who is to serve next point. Records previous
+    set score if required."""
     # This function is a little horrible but working. Need to modularize.
     # Outer if loop considers case when players are in a regular game. Else
     # considers case in tiebreak.
     point_winner = play_point(probA, probB, serving) 
     if not in_tiebreak(gamesA, gamesB):
         pointsA, pointsB = update_game_score(pointsA, pointsB, point_winner)
-        if not game_done(pointsA, pointsB):
-            main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
-        else:
+        if game_done(pointsA, pointsB):
             gamesA, gamesB = update_set_score(gamesA, gamesB, pointsA, pointsB)
             pointsA, pointsB = 0, 0
             serving = change_server(serving)
-            main_board.set_server(serving)
-            if not set_done(gamesA, gamesB):
-                main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
-            else:
+            if set_done(gamesA, gamesB):
                 setsA, setsB = update_match_score(setsA, setsB, gamesA, gamesB)
                 if not match_done(setsA, setsB):
                     set_number = setsA + setsB
@@ -82,23 +103,10 @@ def sim_one_point(main_board, probA, probB, setsA, setsB, gamesA, gamesB, points
                     main_board.previous_set("A" + str(set_number), gamesA)
                     main_board.previous_set("B" + str(set_number), gamesB)
                     gamesA, gamesB = 0, 0
-                    main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
-                else:
-                    set_number = setsA + setsB
-                    if set_number == 5:       # leaves final set score in on scoreboard if match goes to 5 sets
-                        pointsA, pointsB = "", ""
-                        main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
-                    else:
-                        main_board.previous_set("A" + str(set_number), gamesA)
-                        main_board.previous_set("B" + str(set_number), gamesB)
-                        gamesA, gamesB, pointsA, pointsB = "", "", "", ""
-                        main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
     else:
         pointsA, pointsB = update_tiebreak_score(pointsA, pointsB, point_winner)
         if not tiebreak_done(pointsA, pointsB):
-            main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
             serving = change_server_tiebreak(pointsA, pointsB, serving)
-            main_board.set_server(serving)
         else:
             gamesA, gamesB = update_set_score(gamesA, gamesB, pointsA, pointsB)
             setsA, setsB = update_match_score(setsA, setsB, gamesA, gamesB)
@@ -109,22 +117,33 @@ def sim_one_point(main_board, probA, probB, setsA, setsB, gamesA, gamesB, points
                 main_board.previous_set_tiebreak("A" + str(set_number), pointsA)
                 main_board.previous_set_tiebreak("B" + str(set_number), pointsB)
                 serving = server_end_tiebreak(pointsA, pointsB, serving)
-                main_board.set_server(serving)
                 pointsA, pointsB, gamesA, gamesB = 0, 0, 0, 0
-                main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
-            else:
-                set_number = setsA + setsB
-                if set_number == 5:
-                    main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
-                else:
-                    main_board.previous_set("A" + str(set_number), gamesA)
-                    main_board.previous_set("B" + str(set_number), gamesB)
-                    main_board.previous_set_tiebreak("A" + str(set_number), pointsA)
-                    main_board.previous_set_tiebreak("B" + str(set_number), pointsB)
-                    pointsA, pointsB, gamesA, gamesB = "", "", "", ""
-                    main_board.update(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
 
     return setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving
+
+
+def sim_one_game(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving):
+    "Sims one game of tennis and returns state of match after game."
+    while True:
+        setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving = sim_one_point(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving)
+        if (pointsA == 0 and pointsB == 0) or match_done(setsA, setsB): break
+    return setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving
+
+def sim_one_set(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving):
+    "Sims one set of tennis and returns state of match after game."
+    while True:
+        setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving = sim_one_game(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving)
+        if (gamesA == 0 and gamesB == 0) or match_done(setsA, setsB): break
+    return setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving
+
+
+def sim_one_match(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving):
+    "Sims one match of tennis and returns state of match after game."
+    while not match_done(setsA, setsB):
+        setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving = sim_one_set(main_board, probA, probB, setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving)
+    return setsA, setsB, gamesA, gamesB, pointsA, pointsB, serving
+
+    
     
 def play_point(probA, probB, serving):
     "returns point winner"
