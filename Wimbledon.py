@@ -5,7 +5,7 @@
 
 
 from random import random                           # Required to simulate randomness in points
-from Wimbledon_classes_Final import Board, WimbledonInput
+from Wimbledon_classes import Board, WimbledonInput
 
 def main():
     """This program allows the user to simulate a game of tennis on a Wimbledon style
