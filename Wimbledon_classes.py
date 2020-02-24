@@ -118,7 +118,7 @@ class Board:
     
     def __init__(self):
         "Creates scoreboard and initializes some required parameters."
-        self.win = win = GraphWin("Wimbledon Final", 600, 300)
+        self.win = win = GraphWin("Wimbledon Final", 600, 300, autoflush = "False")
         win.setCoords(0, 100, 100, 0)
         win.setBackground(color_rgb(0 , 80 , 0))
         
@@ -357,13 +357,16 @@ class Board:
         self.ServingB_Dot.move(0, 20)
 
         #Create buttons
-        self.sim_match = Button(win, Point(20, 78), 20, 10, "Sim Match")
-        self.play_point = Button(win, Point(50, 78), 20, 10, "Play Point")
-        self.stop_sim = Button(win, Point(80, 78), 20, 10, "Stop Sim")
-        self.quit = Button(win, Point(50, 93), 20, 10, "Quit")
+        self.sim_match = Button(win, Point(14, 78), 20, 10, "Sim Match")
+        self.play_point = Button(win, Point(38, 78), 20, 10, "Play Point")
+        self.play_game = Button(win, Point(38, 93), 20, 10, "Play Game")
+        self.play_set = Button(win, Point(62, 78), 20, 10, "Play Set")
+        self.play_match = Button(win, Point(62, 93), 20, 10, "Play Match")
+        self.stop_sim = Button(win, Point(86, 85.5), 20, 10, "Stop Sim")
+        self.quit = Button(win, Point(14, 93), 20, 10, "Quit")
 
 
-    def update(self, setsA, setsB, gamesA, gamesB, pointsA, pointsB):
+    def update_score(self, setsA, setsB, gamesA, gamesB, pointsA, pointsB):
         "Updates board, converting points to tennis equivalent if in a game (i.e. 1=15, 2=30....)"
         tennis_points = ["0", "15", "30", "40", "A"]  
         self.SetsA.setText(setsA)
@@ -373,12 +376,32 @@ class Board:
         if gamesA == "" and gamesB == "":
             self.PointsA.setText(pointsA)
             self.PointsB.setText(pointsB)
-        elif (gamesA == 6 and gamesB == 6) or (gamesA == 6 and gamesB == 7) or (gamesA == 7 and gamesA == 6) or (pointsA == "" and pointsB == ""):
+        elif (gamesA == 6 and gamesB == 6) or (gamesA == 6 and gamesB == 7) or (gamesA == 7 and gamesB == 6) or (pointsA == "" and pointsB == ""):
             self.PointsA.setText(pointsA)
             self.PointsB.setText(pointsB)
         else:
             self.PointsA.setText(tennis_points[pointsA])
             self.PointsB.setText(tennis_points[pointsB])
+
+
+    def update_score_end(self, setsA, setsB, gamesA, gamesB, pointsA, pointsB):
+        "Updates board to display (final) result of match."
+        set_number = setsA + setsB
+        if (gamesA == 6 and gamesB == 7) or (gamesA == 7 and gamesB == 6):
+            if not set_number == 5:
+                self.previous_set("A" + str(set_number), gamesA)
+                self.previous_set("B" + str(set_number), gamesB)
+                self.previous_set_tiebreak("A" + str(set_number), pointsA)
+                self.previous_set_tiebreak("B" + str(set_number), pointsB)
+                pointsA, pointsB, gamesA, gamesB = "", "", "", ""
+        else:
+            if set_number == 5:
+                pointsA, pointsB = "", ""
+            else:
+                self.previous_set("A" + str(set_number), gamesA)
+                self.previous_set("B" + str(set_number), gamesB)
+                gamesA, gamesB, pointsA, pointsB = "", "", "", ""
+        self.update_score(setsA, setsB, gamesA, gamesB, pointsA, pointsB)
 
             
     def set_players(self, a, b):
@@ -440,7 +463,6 @@ class Board:
 
 
     def interact(self):
-
         """Return string indicating which button has been clicked
         (At least one button must be active or infinite loop)"""
         while True:
@@ -448,7 +470,13 @@ class Board:
             if self.sim_match.clicked(pt):
                 return "Sim"
             elif self.play_point.clicked(pt):
-                return "Play"
+                return "Point"
+            elif self.play_game.clicked(pt):
+                return "Game"
+            elif self.play_set.clicked(pt):
+                return "Set"
+            elif self.play_match.clicked(pt):
+                return "Match"
             elif self.stop_sim.clicked(pt):
                 return "Stop"
             elif self.quit.clicked(pt):
@@ -458,17 +486,24 @@ class Board:
     def button_outside_match(self):
         "Activates sim_match and quit buttons which are necessary when not in the middle of a match. Deactivates others."
         self.sim_match.activate()
-        self.play_point.deactivate()
-        self.stop_sim.deactivate()
         self.quit.activate()
+        self.play_point.deactivate()
+        self.play_game.deactivate()
+        self.play_set.deactivate()
+        self.play_match.deactivate()
+        self.stop_sim.deactivate()
+
 
 
     def button_in_match(self):
         "Activates play_point and stop_sim buttons which are necessary during a match. Deactivates others."
         self.sim_match.deactivate()
-        self.play_point.activate()
-        self.stop_sim.activate()
         self.quit.deactivate()
+        self.play_point.activate()
+        self.play_game.activate()
+        self.play_set.activate()
+        self.play_match.activate()
+        self.stop_sim.activate()
 
 
     def clear(self):
