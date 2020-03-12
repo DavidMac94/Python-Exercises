@@ -158,8 +158,9 @@ class BlackJackApp:
         self.win.setBackground('purple')
         
         # Create text boxes for lables
-        text_data = [ (4, 2, 'DEALER:'), (4, 5, 'PLAYER:'),
-                      (8.7, 4.3, 'CURRENT BET') ]
+        text_data = [ (4, 2, 'DEALER:', 14), (4, 5, 'PLAYER:', 14),
+                      (8.7, 4.3, 'CURRENT BET', 14), (0.8, 1.2, 'Please Gamble', 10),
+                      (0.8, 1,7, 'Responsibly', 10) ]
         
         text_boxes = []
         for x, y, txt in text_data:
@@ -333,11 +334,13 @@ class BlackJackApp:
 
         if player.score() > 21:
             # Player is bust if their score is greater than 21
+            sleep(self.pause)
             self.message.setFill('red')
             self.message.setText('Player is bust')
 
         elif dealer.score() == 21:
             # Dealer wins if they hit blackjack
+            sleep(self.pause)
             self.message.setFill('red')
             self.message.setText('Dealer wins with Blackjack')
             
