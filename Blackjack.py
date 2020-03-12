@@ -163,9 +163,10 @@ class BlackJackApp:
                       (0.8, 1,7, 'Responsibly', 10) ]
         
         text_boxes = []
-        for x, y, txt in text_data:
+        for x, y, txt, size in text_data:
             text_boxes.append(Text(Point(x, y), txt))
             text_boxes[-1].setFill('white')
+            text_boxes[-1].setSize(size)
             text_boxes[-1].draw(self.win)
 
         # intialize a variable to track balance through game
