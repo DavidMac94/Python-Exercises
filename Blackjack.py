@@ -131,8 +131,11 @@ class Chips:
             if self.add.clicked(pt):
                 try:
                     a = int(self.chips.getText())
-                    self.win.close()
-                    return a  # return chips to be added
+                    if a >= 0:
+                        self.win.close()
+                        return a  # return chips to be added
+                    else:
+                        raise ValueError('Negative integer of chips')
                 except:
                     # Gives warning and continues if no number is given
                     warning = Text(Point(2,4), 'Enter an integer amount')
