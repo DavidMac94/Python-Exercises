@@ -160,7 +160,7 @@ class BlackJackApp:
         # Create text boxes for lables
         text_data = [ (4, 2, 'DEALER:', 14), (4, 5, 'PLAYER:', 14),
                       (8.7, 4.3, 'CURRENT BET', 14), (0.8, 1.2, 'Please Gamble', 10),
-                      (0.8, 1,7, 'Responsibly', 10) ]
+                      (0.8, 1.7, 'Responsibly', 10) ]
         
         text_boxes = []
         for x, y, txt, size in text_data:
