@@ -112,6 +112,7 @@ class Chips:
 
     def __init__(self):
         self.win = win = GraphWin("Add Chips", 300, 300)
+        self.win.setBackground('blue')
         win.setCoords(0, 5, 4, 0)
 
         self.chips = Entry(Point(2, 1), 8).draw(win)
@@ -155,7 +156,7 @@ class BlackJackApp:
         # Create window
         self.win = GraphWin('Blackjack', 500, 300)
         self.win.setCoords(-0.5, 10.5, 10.5, -0.5)
-        self.win.setBackground('purple')
+        self.win.setBackground('blue')
         
         # Create text boxes for lables
         text_data = [ (4, 2, 'DEALER:', 14), (4, 5, 'PLAYER:', 14),
