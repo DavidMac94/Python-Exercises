@@ -19,7 +19,7 @@ COnference GUI is a program which keeps track of people attending a conference. 
 This is obviously a job for a database system but the purpose was to practise using Python lists and dictionaries.
 Known Bugs:
 Text will extend beyond containers if too long.
-Results are shown in order of second name. After that the results will appear in no particular order since records are kept in a (unordered) dictionary. This means the same results may appear in a dfferent order in two different searches.
+Results are shown in order of second name. After that the results will appear in no particular order since records are kept in a (unordered) dictionary. This means the results may appear in a different order in two identical searches.
 When no results are displayed, page counter shows page '1 of 0'.
-If an attendee is added with a registered email address then the old record will be deleted.
+If an attendee is added with a registered email address then the old record will be deleted (the user may want a warning before proceeding).
 
