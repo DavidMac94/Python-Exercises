@@ -303,15 +303,15 @@ class addInterface:
     'Creates GUI for adding a new attendee'
     def __init__(self):
         self.win = GraphWin('Add Attendee', 400, 250)
-        self.win.setBackground('green')
+        self.win.setBackground(color_rgb(242, 236, 236))
         self.win.setCoords(0, 10, 10, 0)
         
         # Create text
         txt_boxes = []
-        txt_data = [ (Point(2, 1), 'Name', 'white'),
-                     (Point(2, 3), 'Email', 'white'),
-                     (Point(2, 5), 'Company', 'white'),
-                     (Point(2, 7), 'City', 'white') ]
+        txt_data = [ (Point(2, 1), 'Name', 'darkgray'),
+                     (Point(2, 3), 'Email', 'darkgray'),
+                     (Point(2, 5), 'Company', 'darkgray'),
+                     (Point(2, 7), 'City', 'darkgray') ]
         for p, txt, col in txt_data:
             txt_boxes.append(Text(p, txt))
             txt_boxes[-1].setFill(col)
