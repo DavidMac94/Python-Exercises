@@ -1,5 +1,4 @@
 from graphics import *
-from button import Button
 from time import sleep
 from random import shuffle
 
