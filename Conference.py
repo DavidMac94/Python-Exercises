@@ -15,7 +15,7 @@ class conferenceApp:
         Entries in txt file must be in form "<email>, <name>, <company>, <city>"
         and separated by lines.
         '''
-        handle = open('attendees.txt', 'r')
+        handle = open('ConferenceAttendees.txt', 'r')
         for line in handle.readlines():
             record = line.strip().split(', ')
             self.attendees[record[0]] = {'name': record[1], 'company': record[2], 'city': record[3]}
@@ -23,7 +23,7 @@ class conferenceApp:
     
     def writeList(self):
         '''Writes updated attendee record to file.'''
-        handle = open('attendees.txt', 'w')
+        handle = open('ConferenceAttendees.txt', 'w')
         for record in self.attendees:
             handle.write('{0}, {1}, {2}, {3}\n'.format(record, self.attendees[record]['name'],
             self.attendees[record]['company'], self.attendees[record]['city']))
