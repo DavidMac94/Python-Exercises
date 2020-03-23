@@ -23,3 +23,5 @@ Results are shown in order of second name. After that the results will appear in
 When no results are displayed, page counter shows page '1 of 0'.
 If an attendee is added with a registered email address then the old record will be deleted (the user may want a warning before proceeding).
 
+ATM:
+The ATM program simulates an ATM. Account information is stored in a json file called ATMaccounts. After entering correct ID/PIN combo, the user can withdraw cash, transfer between accounts (main and savings), view balances and change their pin. All actions update their account info immediately and transactions will only go through if enough money is in their account. Balances are stored in integer amounts to stop any floating point errors. Users may withdraw/transfer any value up to £999.99. 
