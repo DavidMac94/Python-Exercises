@@ -272,10 +272,7 @@ class conferenceInterface:
             elif self.search.clicked(pt):
                 return 'search'
             elif self.viewAll.clicked(pt):
-                return 'view all'
-               
-                    
-                
+                return 'view all'      
         return choice
     
     def displayPage(self):
@@ -386,5 +383,4 @@ class editInterface(addInterface):
         self.entry_boxes[3].setText(record['city'])
     
 
-
-conferenceApp().run()
+if __name__ == '__main__': conferenceApp().run()
